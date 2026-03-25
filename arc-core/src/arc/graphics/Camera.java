@@ -122,6 +122,24 @@ public class Camera{
 
     /** Sets the specified rectangle to this camera's bounds.*/
     public Rect bounds(Rect out){
-        return out.setSize(width, height).setCenter(position);
+        // 4 corners in screen space
+        Vec2 v1 = new Vec2(0, 0);
+        Vec2 v2 = new Vec2(width, 0);
+        Vec2 v3 = new Vec2(width, height);
+        Vec2 v4 = new Vec2(0, height);
+
+        // Convert to world space using inverse matrix
+        v1.mul(inv);
+        v2.mul(inv);
+        v3.mul(inv);
+        v4.mul(inv);
+
+        // Find AABB
+        float minX = Math.min(Math.min(v1.x, v2.x), Math.min(v3.x, v4.x));
+        float maxX = Math.max(Math.max(v1.x, v2.x), Math.max(v3.x, v4.x));
+        float minY = Math.min(Math.min(v1.y, v2.y), Math.min(v3.y, v4.y));
+        float maxY = Math.max(Math.max(v1.y, v2.y), Math.max(v3.y, v4.y));
+
+        return out.set(minX, minY, maxX - minX, maxY - minY);
     }
 }
