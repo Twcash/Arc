@@ -22,8 +22,14 @@ public class Camera{
      * Recalculates the projection and view matrix of this camera. Use this after you've manipulated
      * any of the attributes of the camera.
      */
+    public float rotation; // in degrees
+
     public void update(){
+        mat.idt();
         mat.setOrtho(position.x - width / 2f, position.y - height / 2f, width, height);
+        mat.translate(position.x, position.y);
+        mat.rotate(rotation);
+        mat.translate(-position.x, -position.y);
         inv.set(mat).inv();
     }
 
