@@ -26,11 +26,13 @@ public class Camera{
 
     public void update(){
         mat.idt();
-        mat.setOrtho(position.x - width / 2f, position.y - height / 2f, width, height);
-        mat.translate(position.x, position.y);
+        mat.setOrtho(0, 0, width, height);
+
+        mat.translate(width / 2f, height / 2f);
         mat.rotate(rotation);
-        mat.translate(-position.x, -position.y);
-        inv.set(mat).inv();
+        mat.translate(-width / 2f, -height / 2f);
+
+        mat.translate(-position.x + width/2f, -position.y + height/2f);
     }
 
     public void resize(float viewportWidth, float viewportHeight){
